@@ -1,0 +1,39 @@
+{
+  "name": "ds-async-di",
+  "version": "0.0.1",
+  "description": "Dead-simple dependency injection for asynchronous components",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib --ignore *.spec.js",
+    "test": "mocha --require babel-core/register src/**/*.spec.js",
+    "prepublish": "npm run build && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kendru/ds-async-di.git"
+  },
+  "keywords": [
+    "ds-tools",
+    "di",
+    "dependencies"
+  ],
+  "author": "Andrew Meredith <andymeredith@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kendru/ds-async-di/issues"
+  },
+  "homepage": "https://github.com/kendru/ds-async-di#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.0.5",
+    "sinon": "^4.5.0"
+  },
+  "dependencies": {
+    "ds-deps": "0.0.1"
+  }
+}
