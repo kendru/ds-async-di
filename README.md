@@ -2,7 +2,7 @@
 
 Dead-simple asynchronous dependency injection.
 
-*async-di* provides a simple framework for managing the lifecycle of a number
+*ds-async-di* provides a simple framework for managing the lifecycle of a number
 of asynchronous components that may depend on each other. It uses the dependency
 tree data structure from [ds-deps](https://github.com/kendru/ds-deps) to
 calculate the order in which a system of asynchronous components should be
@@ -14,7 +14,7 @@ This library is heavily inspired by [Stuart Sierra's](https://github.com/stuarts
 ### Usage
 
 ```javascript
-const { Component, dependsOn, system } = require('ds-async-di');
+const { Component, system } = require('ds-async-di');
 
 class Database extends Component {
     
@@ -56,7 +56,7 @@ class Cache extends Component {
 
 // We can decorate a component with its dependencies. In this case, cache and
 // database will always be started before the WebServer.
-@dependsOn([ 'cache', 'database' ])
+@Component.dependsOn([ 'cache', 'database' ])
 class WebServer extends Component {
     
     async start() {
