@@ -44,7 +44,7 @@ class Database extends Component {
     // available to any other component until it has been successfully
     // started.
     async listPeople() {
-        return await this.connection.query('SELECT * from "people"`);
+        return await this.connection.query(`SELECT * from "people"`);
     }
 }
 
