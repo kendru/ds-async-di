@@ -22,6 +22,7 @@ class Component {
 Component.dependsOn = function(dependencies) {
     return function decorateDependencies(component) {
         component[syms.dependencies] = dependencies;
+        return component;
     }
 }
 
