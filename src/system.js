@@ -8,6 +8,19 @@ function sequenceAsyncFns(asyncFns) {
         Promise.resolve());
 }
 
+function executeMethodSequentially(components, method) {
+    return sequenceAsyncFns(
+        components.map(component => () => component[method]()));
+}
+
+function startAllComponents(components) {
+    return executeMethodSequentially(components, 'start');
+}
+
+function stopAllComponents(components) {
+    return executeMethodSequentially(components, 'stop');
+}
+
 function system(components) {
     const dependencies = new Graph();
     Object.keys(components).forEach(name => {
@@ -34,17 +47,34 @@ function system(components) {
 
         start() {
             return sequenceAsyncFns(
-                topoSortedDeps
-                    .map(dep => components[dep])
-                    .map(component => () => component.start()));
+                this.startOrder
+                    .map(level => () => startAllComponents(level)));
         }
 
         stop() {
             return sequenceAsyncFns(
-                topoSortedDeps
-                    .map(dep => components[dep])
-                    .map(component => () => component.stop())
+                this.startOrder
+                    .map(level => () => stopAllComponents(level))
                     .reverse());
+        }
+
+        get startOrder() {
+            const levels = [];
+            let currentLevel = [];
+            for (let dep of topoSortedDeps) {
+                const hasCurrentLevelDependency = currentLevel.some(cDep =>
+                    dependencies.dependsOn(dep, cDep));
+
+                if (hasCurrentLevelDependency) {
+                    levels.push(currentLevel);
+                    currentLevel = [];
+                }
+
+                currentLevel.push(dep);
+            }
+            levels.push(currentLevel);
+
+            return levels.map(level => level.map(dep => components[dep]));
         }
     }
 
