@@ -34,7 +34,7 @@ function system(components) {
             if (!dependentComponent) {
                 throw new Error(`Unmet dependency: ${dep} -> ${name}`);
             }
-            
+
             dependencies.dependOn(name, dep);
             component[dep] = components[dep];
         });
@@ -56,6 +56,10 @@ function system(components) {
                 this.startOrder
                     .map(level => () => stopAllComponents(level))
                     .reverse());
+        }
+
+        get components() {
+            return components;
         }
 
         get startOrder() {

@@ -40,6 +40,11 @@ describe('Component systems', () => {
         expect(sys).to.be.an.instanceOf(Component);
     });
 
+    it('should expose the components', () => {
+        expect(sys.components.a).to.equal(a);
+        expect(sys.components.b).to.equal(b);
+    });
+
     it('Should start up components in the correct order', async () => {
         await sys.start();
 
