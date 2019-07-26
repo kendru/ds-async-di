@@ -2,7 +2,6 @@ require('@babel/polyfill');
 const { expect } = require('chai');
 const system = require('./system');
 const Component = require('./Component');
-const sinon = require('sinon');
 
 class TestComponent extends Component {
     constructor(events) {

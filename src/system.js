@@ -4,7 +4,7 @@ const syms = require('./syms');
 
 function sequenceAsyncFns(asyncFns) {
     return asyncFns.reduce((promise, fn) =>
-        promise.then(result => fn()),
+        promise.then(_result => fn()),
         Promise.resolve());
 }
 
