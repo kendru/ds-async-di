@@ -1,4 +1,4 @@
-require('babel-polyfill');
+require('@babel/polyfill');
 const { expect } = require('chai');
 const system = require('./system');
 const Component = require('./Component');
