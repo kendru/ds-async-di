@@ -25,7 +25,7 @@ function system(components) {
     const dependencies = new Graph();
     Object.keys(components).forEach(name => {
         const component = components[name];
-        if (!(component instanceof Component)) {
+        if (!(component instanceof Component) && component[syms.type] !== 'component') {
             throw new Error(`Not a Component: ${name}`);
         }
 

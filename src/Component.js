@@ -1,7 +1,11 @@
 const syms = require('./syms')
 
 class Component {
-  
+
+    constructor() {
+        this[syms.type] = 'component';
+    }
+
     start() {
         return Promise.reject(
             new Error(`${this.constructor.name} does not implement required method: start(): Promise<void>`)
