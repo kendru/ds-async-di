@@ -1,42 +1,46 @@
-const { Graph } = require('ds-deps');
-const Component = require('./Component');
-const syms = require('./syms');
+import { Graph } from 'ds-deps';
+import { Component } from './Component';
+import * as syms from './syms';
 
-function sequenceAsyncFns(asyncFns) {
+const sequenceAsyncFns = <TFn extends () => Promise<void>>(asyncFns: TFn[]): Promise<void> => {
     return asyncFns.reduce((promise, fn) =>
         promise.then(_result => fn()),
         Promise.resolve());
 }
 
-function executeMethodSequentially(components, method) {
+const executeMethodSequentially = (components: Component[], method: 'start' | 'stop'): Promise<void> => {
     return sequenceAsyncFns(
         components.map(component => () => component[method]()));
 }
 
-function startAllComponents(components) {
-    return executeMethodSequentially(components, 'start');
+const startAllComponents = (components: Component[]) => executeMethodSequentially(components, 'start');
+const stopAllComponents = (components: Component[]) => executeMethodSequentially(components, 'stop');
+
+type ComponentMapping = { [key: string]: Component };
+
+export interface System extends Component {
+  readonly components: ComponentMapping;
+  readonly startOrder: Component[][];
 }
 
-function stopAllComponents(components) {
-    return executeMethodSequentially(components, 'stop');
-}
-
-function system(components) {
-    const dependencies = new Graph();
+export const system = (components: ComponentMapping): System => {
+    const dependencies = new Graph<string>();
     Object.keys(components).forEach(name => {
         const component = components[name];
         if (!(component instanceof Component) && component[syms.type] !== 'component') {
             throw new Error(`Not a Component: ${name}`);
         }
 
-        (component.constructor[syms.dependencies] || []).forEach(dep => {
+        const klass = (component.constructor as typeof Component);
+        const deps = klass[syms.dependencies] || [];
+        (deps).forEach((dep: string) => {
             const dependentComponent = components[dep];
             if (!dependentComponent) {
                 throw new Error(`Unmet dependency: ${dep} -> ${name}`);
             }
 
             dependencies.dependOn(name, dep);
-            component[dep] = components[dep];
+            (component as any)[dep] = components[dep];
         });
     });
     const topoSortedDeps = dependencies.topoSort();
@@ -85,4 +89,3 @@ function system(components) {
     return new SystemComponent();
 }
 
-module.exports = system;

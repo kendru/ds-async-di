@@ -4,9 +4,10 @@
   "description": "Dead-simple dependency injection for asynchronous components",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib --ignore *.spec.js",
-    "test": "mocha --require '@babel/register' src/**/*.spec.js",
-    "prepublish": "npm run build && npm test"
+    "clean": "rm -rf lib",
+    "build": "tsc",
+    "test": "jest",
+    "prepublish": "npm run clean && npm run build && npm test"
   },
   "repository": {
     "type": "git",
@@ -24,16 +25,13 @@
   },
   "homepage": "https://github.com/kendru/ds-async-di#readme",
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/register": "^7.5.5",
-    "chai": "^4.1.2",
-    "mocha": "^5.0.5"
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.0.1",
+    "ts-jest": "^26.5.5",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
-    "ds-deps": "0.0.2"
+    "ds-deps": "1.0.0"
   }
 }
