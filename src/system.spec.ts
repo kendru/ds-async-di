@@ -1,5 +1,5 @@
 import { system, System } from './system';
-import { Component, dependsOn } from './Component';
+import { Component, dependsOn } from './component';
 
 class TestComponent extends Component {
   constructor(public events: string[]) {
