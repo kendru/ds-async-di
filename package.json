@@ -1,6 +1,6 @@
 {
   "name": "ds-async-di",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "Dead-simple dependency injection for asynchronous components",
   "main": "lib/index.js",
   "scripts": {

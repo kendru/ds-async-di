@@ -13,11 +13,11 @@ This library is heavily inspired by [Stuart Sierra's](https://github.com/stuarts
 
 ### Usage
 
-```javascript
-const { Component, system } = require('ds-async-di');
+```typescript
+import { Component, dependsOn, system } from 'ds-async-di';
 
 class Database extends Component {
-    
+
     // Components can be constructed with any necessary state.
     // It is common to pass configuration into a constructor.
     constructor(host, user, password) {
@@ -54,11 +54,8 @@ class Cache extends Component {
     // ...
 }
 
-// We can decorate a component with its dependencies. In this case, cache and
-// database will always be started before the WebServer.
-@Component.dependsOn([ 'cache', 'database' ])
 class WebServer extends Component {
-    
+
     async start() {
         console.log('Starting web server')
         // We can access the injected components as properties on this
@@ -73,10 +70,14 @@ class WebServer extends Component {
     }
 }
 
+// We can decorate a component with its dependencies. In this case, cache and
+// database will always be started before the WebServer.
+const InjectableWebServer = dependsOn(WebServer, ['cache', 'database']);
+
 const mySystem = system({
    database: new Database('localhost', 'test', 's3cr3t'),
    cache: new Cache(),
-   webServer: new WebServer()
+   webServer: new InjectableWebServer(),
 });
 
 mySystem.start().then(() =>

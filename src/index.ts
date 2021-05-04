@@ -1,2 +1,2 @@
-export { Component } from './component';
+export { Component, dependsOn } from './component';
 export { system } from './system';
